@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#070B12" />
+  <title>Steady — Build a steady rhythm with God.</title>
+  <meta name="description" content="Steady helps you grow in prayer, Scripture, and reflection through gentle daily rhythms rooted in grace." />
+
+  <!-- Typography: Cormorant Garamond (headings/display) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =============================================
+       APP SHELL
+       React Native: App.tsx root navigator
+       ============================================= -->
+  <div id="app">
+
+    <!-- Toast / Completion notification -->
+    <div class="toast" id="app-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- =============================================
+         SCREEN: WELCOME
+         React Native: screens/WelcomeScreen.tsx
+         ============================================= -->
+    <section id="screen-welcome" class="screen screen--welcome active" aria-label="Welcome to Steady">
+
+      <!-- Ambient background glows -->
+      <div class="welcome__bg" aria-hidden="true">
+        <div class="welcome__orb welcome__orb--gold"></div>
+        <div class="welcome__orb welcome__orb--green"></div>
+        <div class="welcome__orb welcome__orb--navy"></div>
+      </div>
+
+      <div class="welcome__body">
+
+        <!-- React Native Component: <AppLogomark /> -->
+        <div class="welcome__logomark" aria-hidden="true">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="18" y="3" width="4" height="34" rx="2" fill="currentColor"/>
+            <rect x="5" y="14" width="30" height="4" rx="2" fill="currentColor"/>
+          </svg>
+        </div>
+
+        <div class="welcome__heading">
+          <h1 class="welcome__brand">Steady</h1>
+          <p class="welcome__tagline">Build a steady rhythm with God.</p>
+        </div>
+
+        <p class="welcome__description">
+          Steady helps you grow in prayer, Scripture, and reflection
+          through gentle daily rhythms rooted in grace.
+        </p>
+
+        <div class="welcome__actions">
+          <button class="btn btn--cta" onclick="enterApp()">Begin Today</button>
+          <p class="welcome__verse">
+            "Be still, and know that I am God."
+            <span class="welcome__verse-ref">Psalm 46:10</span>
+          </p>
+        </div>
+
+      </div>
+
+      <div class="welcome__fade-bottom" aria-hidden="true"></div>
+    </section>
+
+
+    <!-- =============================================
+         SCREEN: DASHBOARD
+         React Native: screens/DashboardScreen.tsx
+         ============================================= -->
+    <section id="screen-dashboard" class="screen screen--dashboard" aria-label="Dashboard">
+
+      <!-- Sticky header -->
+      <header class="dashboard__header">
+        <div class="dashboard__greeting">
+          <p class="greeting__salutation" id="greeting-salutation">Good morning,</p>
+          <h2 class="greeting__name">Yegor</h2>
+        </div>
+        <!-- React Native Component: <StreakBadge count={streak} /> -->
+        <div class="streak-badge" id="streak-badge" aria-label="7 day streak">
+          <svg class="streak-badge__flame" width="13" height="16" viewBox="0 0 13 16" fill="currentColor" aria-hidden="true">
+            <path d="M6.5 0C6.5 0 3 4.5 3 7.5C3 9.43 4.57 11 6.5 11C8.43 11 10 9.43 10 7.5C10 4.5 6.5 0 6.5 0Z"/>
+            <ellipse cx="5.5" cy="7.8" rx="1" ry="1.8" fill="rgba(255,255,255,0.22)"/>
+          </svg>
+          <span class="streak-badge__count" id="streak-count">7</span>
+          <span class="streak-badge__label">day streak</span>
+        </div>
+      </header>
+
+      <div class="screen__scroll" id="dashboard-scroll">
+
+        <!-- Date label -->
+        <div class="dashboard__date-row">
+          <p class="section__eyebrow">Today's Rhythm</p>
+          <p class="dashboard__date" id="today-date"></p>
+        </div>
+
+        <!-- ============ HABIT CARDS ============ -->
+        <!-- React Native Component: <HabitCard habit="prayer" /> -->
+
+        <!-- Prayer -->
+        <div class="card card--habit" id="habit-card-prayer"
+             onclick="navigateTo('screen-prayer')" role="button" tabindex="0"
+             aria-label="Open daily prayer">
+          <div class="habit-card__icon habit-card__icon--prayer" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M12 2C12 2 8 7.5 8 12C8 14.2 9.8 16 12 16C14.2 16 16 14.2 16 12C16 7.5 12 2 12 2Z" stroke-linejoin="round"/>
+              <path d="M12 16V21" stroke-linecap="round"/>
+              <path d="M9 21H15" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="habit-card__body">
+            <p class="habit-card__name">Prayer</p>
+            <p class="habit-card__meta">10 min · Start with silence</p>
+          </div>
+          <!-- React Native Component: <HabitStatusIcon state={state} /> -->
+          <div class="habit-card__status" id="habit-status-prayer" data-state="pending" aria-label="Not yet completed">
+            <div class="status-ring"></div>
+          </div>
+        </div>
+
+        <!-- Scripture -->
+        <div class="card card--habit" id="habit-card-bible"
+             onclick="navigateTo('screen-bible')" role="button" tabindex="0"
+             aria-label="Open Scripture reading">
+          <div class="habit-card__icon habit-card__icon--bible" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M4 18.5C4 17.1 5.1 16 6.5 16H20" stroke-linecap="round"/>
+              <path d="M6.5 2H20V22H6.5C5.1 22 4 20.9 4 19.5V4.5C4 3.1 5.1 2 6.5 2Z" stroke-linejoin="round"/>
+              <path d="M12 7V13M9.5 10H14.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="habit-card__body">
+            <p class="habit-card__name">Scripture</p>
+            <p class="habit-card__meta">Psalm 23 · Day 5 of 30</p>
+          </div>
+          <div class="habit-card__status" id="habit-status-bible" data-state="pending" aria-label="Not yet completed">
+            <div class="status-ring"></div>
+          </div>
+        </div>
+
+        <!-- Reflection -->
+        <div class="card card--habit" id="habit-card-reflection"
+             onclick="navigateTo('screen-journal')" role="button" tabindex="0"
+             aria-label="Open reflection journal">
+          <div class="habit-card__icon habit-card__icon--reflection" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M11 20H20" stroke-linecap="round"/>
+              <path d="M16.5 3.5a2.121 2.121 0 013 3L8 18l-5 1 1-5L16.5 3.5Z" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="habit-card__body">
+            <p class="habit-card__name">Reflection</p>
+            <p class="habit-card__meta">Journal · 5 min</p>
+          </div>
+          <div class="habit-card__status habit-card__status--done" id="habit-status-reflection" data-state="complete" aria-label="Completed">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M2.5 7L5.5 10.5L11.5 4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- ============ WEEKLY SCORE STRIP ============ -->
+        <!-- React Native Component: <RhythmScore score={score} weekData={weekData} /> -->
+        <div class="card card--weekly-score" onclick="navigateTo('screen-weekly')" role="button" tabindex="0" aria-label="View weekly rhythm score">
+          <div class="weekly-score__left">
+            <p class="weekly-score__label">Weekly Rhythm</p>
+            <div class="weekly-score__number">
+              <span class="weekly-score__value" id="dashboard-score">82</span>
+              <span class="weekly-score__pct">%</span>
+            </div>
+            <!-- Dot row: 7 day indicators -->
+            <div class="week-dots" id="week-dots" role="list" aria-label="Days this week"></div>
+          </div>
+          <div class="weekly-score__right">
+            <p class="weekly-score__note">Beautifully consistent this week. Keep returning.</p>
+            <span class="weekly-score__cta" aria-hidden="true">View Details →</span>
+          </div>
+        </div>
+
+        <!-- ============ ENCOURAGEMENT / DAILY VERSE ============ -->
+        <div class="card card--verse">
+          <p class="verse__text" id="daily-verse">
+            "Because of the Lord's great love we are not consumed, for his compassions
+            never fail. They are new every morning; great is your faithfulness."
+          </p>
+          <p class="verse__ref" id="daily-verse-ref">Lamentations 3:22–23</p>
+        </div>
+
+        <!-- Grace message — visible when user misses multiple days -->
+        <div class="card card--grace hidden" id="grace-card" aria-hidden="true">
+          <p class="grace__mark" aria-hidden="true">✦</p>
+          <p class="grace__message">Grace meets you here. Begin again today.</p>
+        </div>
+
+        <!-- ============ QUICK ACTIONS ============ -->
+        <div class="quick-actions" role="group" aria-label="Quick navigation">
+
+          <button class="quick-action" onclick="navigateTo('screen-prayer-list')" aria-label="Prayer List">
+            <div class="quick-action__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M4 6H18M4 11H14M4 16H10" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="quick-action__label">Prayer List</span>
+          </button>
+
+          <button class="quick-action" onclick="navigateTo('screen-weekly')" aria-label="This Week">
+            <div class="quick-action__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7">
+                <rect x="3" y="4" width="16" height="15" rx="2" stroke-linejoin="round"/>
+                <path d="M3 9H19M8 2V6M14 2V6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="quick-action__label">This Week</span>
+          </button>
+
+          <button class="quick-action" onclick="navigateTo('screen-settings')" aria-label="Reminder settings">
+            <div class="quick-action__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M11 3C7.5 3 5 6 5 9V13L3 15H19L17 13V9C17 6 14.5 3 11 3Z" stroke-linejoin="round"/>
+                <path d="M9 15C9 16.1 9.9 17 11 17C12.1 17 13 16.1 13 15" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="quick-action__label">Reminders</span>
+          </button>
+
+        </div>
+
+      </div><!-- end .screen__scroll -->
+    </section>
+
+
+    <!-- =============================================
+         SCREEN: DAILY PRAYER
+         React Native: screens/PrayerScreen.tsx
+         ============================================= -->
+    <section id="screen-prayer" class="screen screen--prayer" aria-label="Daily Prayer">
+
+      <div class="screen__header screen__header--back">
+        <button class="btn-back" onclick="navigateTo('screen-dashboard')" aria-label="Back to Dashboard">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12.5 5L7.5 10L12.5 15" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <h2 class="screen__title">Daily Prayer</h2>
+        <div class="header__spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="screen__scroll" id="prayer-scroll">
+
+        <!-- React Native Component: <PrayerTimer /> -->
+        <div class="prayer-timer" id="prayer-timer" aria-label="Prayer timer">
+
+          <!-- Timer ring -->
+          <div class="timer__ring-wrap" aria-hidden="true">
+            <svg class="timer__svg" viewBox="0 0 200 200">
+              <!-- Background track -->
+              <circle class="timer__track" cx="100" cy="100" r="88"/>
+              <!-- Progress ring — stroke-dashoffset controlled by JS -->
+              <circle class="timer__progress" id="timer-ring" cx="100" cy="100" r="88"
+                      transform="rotate(-90 100 100)"/>
+            </svg>
+
+            <!-- Center display -->
+            <div class="timer__center">
+              <p class="timer__eyebrow" id="timer-eyebrow">FOCUS TIME</p>
+              <p class="timer__display" id="timer-display" aria-live="polite" aria-label="Time remaining">10:00</p>
+              <p class="timer__state" id="timer-state">Ready</p>
+            </div>
+          </div>
+
+          <!-- Duration chooser -->
+          <div class="timer__durations" role="group" aria-label="Prayer duration">
+            <button class="duration-btn" data-mins="5"  onclick="setDuration(5)">5 min</button>
+            <button class="duration-btn is-active" data-mins="10" onclick="setDuration(10)">10 min</button>
+            <button class="duration-btn" data-mins="15" onclick="setDuration(15)">15 min</button>
+            <button class="duration-btn" data-mins="20" onclick="setDuration(20)">20 min</button>
+          </div>
+
+          <!-- Controls -->
+          <div class="timer__controls">
+            <button class="timer-ctrl timer-ctrl--reset" id="timer-reset" onclick="resetTimer()" title="Reset" aria-label="Reset timer">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9a6 6 0 1 0 1-3.3" stroke-linecap="round"/>
+                <path d="M3 3v3h3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <button class="btn btn--play" id="timer-toggle" onclick="toggleTimer()" aria-label="Start or pause timer">
+              <!-- Play icon -->
+              <svg id="icon-play" width="28" height="28" viewBox="0 0 28 28" fill="currentColor">
+                <path d="M10 8.5v11l9.5-5.5L10 8.5Z"/>
+              </svg>
+              <!-- Pause icon (hidden by default) -->
+              <svg id="icon-pause" width="28" height="28" viewBox="0 0 28 28" fill="currentColor" style="display:none">
+                <rect x="9"   y="8" width="3.5" height="12" rx="1.5"/>
+                <rect x="15.5" y="8" width="3.5" height="12" rx="1.5"/>
+              </svg>
+            </button>
+
+            <button class="timer-ctrl timer-ctrl--check" id="timer-done" onclick="completeHabit('prayer')" title="Mark complete" aria-label="Mark prayer complete">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l4.5 4.5 7.5-7.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+        </div><!-- end .prayer-timer -->
+
+        <!-- Prayer prompt -->
+        <div class="card card--prompt">
+          <p class="card-eyebrow">Today's Focus</p>
+          <p class="prompt__text" id="prayer-prompt">
+            Begin in silence. Let God's presence settle over you before words come.
+            Rest in His nearness — He already knows your heart.
+          </p>
+        </div>
+
+        <!-- Scripture for prayer -->
+        <div class="card card--scripture">
+          <p class="scripture__ref">Philippians 4:6–7</p>
+          <p class="scripture__body">
+            "Do not be anxious about anything, but in every situation, by prayer and petition,
+            with thanksgiving, present your requests to God. And the peace of God, which
+            transcends all understanding, will guard your hearts and your minds in Christ Jesus."
+          </p>
+        </div>
+
+        <!-- Prayer notes input -->
+        <div class="card card--input">
+          <label class="input__label" for="prayer-notes">Prayer Notes</label>
+          <textarea class="input__textarea" id="prayer-notes" rows="4"
+                    placeholder="Write what's on your heart…"></textarea>
+        </div>
+
+        <button class="btn btn--primary btn--full" onclick="completeHabit('prayer')">
+          Mark Prayer Complete
+        </button>
+
+      </div>
+    </section>
+
+
+    <!-- =============================================
+         SCREEN: BIBLE READING
+         React Native: screens/BibleReadingScreen.tsx
+         ============================================= -->
+    <section id="screen-bible" class="screen screen--bible" aria-label="Scripture Reading">
+
+      <div class="screen__header screen__header--back">
+        <button class="btn-back" onclick="navigateTo('screen-dashboard')" aria-label="Back to Dashboard">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12.5 5L7.5 10L12.5 15" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <h2 class="screen__title">Scripture</h2>
+        <div class="header__spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="screen__scroll" id="bible-scroll">
+
+        <!-- Reading plan progress card -->
+        <div class="card card--reading-plan">
+          <div class="reading-plan__top">
+            <div>
+              <p class="reading-plan__name">30-Day Psalms Journey</p>
+              <p class="reading-plan__progress-text">Day 5 of 30</p>
+            </div>
+            <span class="reading-plan__pct">17%</span>
+          </div>
+          <div class="progress-bar" aria-label="17% complete">
+            <div class="progress-bar__fill" style="width: 17%"></div>
+          </div>
+        </div>
+
+        <!-- Week tracker -->
+        <!-- React Native Component: <WeekTracker days={weekData} /> -->
+        <div class="week-tracker" aria-label="Reading days this week">
+          <p class="section__eyebrow">This Week</p>
+          <div class="week-tracker__row" id="week-tracker-days" role="list"></div>
+        </div>
+
+        <!-- Today's passage -->
+        <div class="card card--passage">
+          <div class="passage__header">
+            <div>
+              <p class="passage__book">Psalm 23</p>
+              <p class="passage__title">The Lord Is My Shepherd</p>
+            </div>
+            <span class="passage__est">~3 min</span>
+          </div>
+
+          <!-- Scrollable passage text — reading progress bar responds to scroll -->
+          <div class="passage__text" id="passage-text" onscroll="updateReadingProgress()">
+            <p class="passage__verse"><span class="verse-num">1</span> The Lord is my shepherd; I shall not want.</p>
+            <p class="passage__verse"><span class="verse-num">2</span> He makes me lie down in green pastures. He leads me beside still waters.</p>
+            <p class="passage__verse"><span class="verse-num">3</span> He restores my soul. He leads me in paths of righteousness for his name's sake.</p>
+            <p class="passage__verse"><span class="verse-num">4</span> Even though I walk through the valley of the shadow of death, I will fear no evil, for you are with me; your rod and your staff, they comfort me.</p>
+            <p class="passage__verse"><span class="verse-num">5</span> You prepare a table before me in the presence of my enemies; you anoint my head with oil; my cup overflows.</p>
+            <p class="passage__verse"><span class="verse-num">6</span> Surely goodness and mercy shall follow me all the days of my life, and I shall dwell in the house of the Lord forever.</p>
+          </div>
+
+          <!-- Reading scroll progress -->
+          <div class="passage__progress-bar" aria-hidden="true">
+            <div class="passage__progress-fill" id="reading-progress-fill"></div>
+          </div>
+        </div>
+
+        <!-- Reflection notes -->
+        <div class="card card--input">
+          <label class="input__label" for="bible-notes">Reflection Notes</label>
+          <textarea class="input__textarea" id="bible-notes" rows="3"
+                    placeholder="What stood out to you? What is God saying?"></textarea>
+        </div>
+
+        <button class="btn btn--primary btn--full" onclick="completeHabit('bible')">
+          Mark Reading Complete
+        </button>
+
+      </div>
+    </section>
+
+
+    <!-- =============================================
+         SCREEN: REFLECTION JOURNAL
+         React Native: screens/JournalScreen.tsx
+         ============================================= -->
+    <section id="screen-journal" class="screen screen--journal" aria-label="Reflection Journal">
+
+      <div class="screen__header screen__header--back">
+        <button class="btn-back" onclick="navigateTo('screen-dashboard')" aria-label="Back to Dashboard">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12.5 5L7.5 10L12.5 15" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <h2 class="screen__title">Reflection</h2>
+        <div class="header__spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="screen__scroll">
+
+        <!-- Date card -->
+        <div class="card card--date-chip">
+          <p class="date-chip__label">Today</p>
+          <p class="date-chip__value" id="journal-date"></p>
+        </div>
+
+        <!-- Rotating prompt -->
+        <div class="card card--prompt">
+          <p class="card-eyebrow">Today's Prompt</p>
+          <p class="prompt__question" id="journal-prompt">
+            "Where did you sense God's presence today — in a moment, a person, or a thought?"
+          </p>
+          <button class="btn btn--ghost btn--sm" onclick="rotatePrompt()">New Prompt</button>
+        </div>
+
+        <!-- Journal editor -->
+        <!-- React Native Component: <JournalEditor prompt={prompt} /> -->
+        <div class="card card--journal-editor">
+          <label class="input__label" for="journal-entry">Your Reflection</label>
+          <textarea class="input__textarea input__textarea--journal" id="journal-entry" rows="9"
+                    placeholder="Write freely. This space is just between you and God."
+                    oninput="updateWordCount()"></textarea>
+          <div class="journal__meta">
+            <span class="journal__word-count" id="word-count">0 words</span>
+            <span class="journal__privacy">Private · Saved locally</span>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" onclick="saveJournalEntry()">
+          Save Reflection
+        </button>
+
+        <!-- Previous entries -->
+        <div class="journal__history">
+          <p class="section__eyebrow">Recent Reflections</p>
+          <div id="journal-entries-list">
+
+            <div class="journal-entry card">
+              <div class="journal-entry__header">
+                <p class="journal-entry__date">May 8</p>
+                <p class="journal-entry__words">47 words</p>
+              </div>
+              <p class="journal-entry__preview">
+                "I felt His presence most strongly in the early morning quiet — before the day began. The reading from James settled something in me I hadn't been able to name…"
+              </p>
+            </div>
+
+            <div class="journal-entry card">
+              <div class="journal-entry__header">
+                <p class="journal-entry__date">May 7</p>
+                <p class="journal-entry__words">31 words</p>
+              </div>
+              <p class="journal-entry__preview">
+                "Gratitude is harder when life feels uncertain. But I remembered: His mercies are new every morning. That's not a cliché — it's a lifeline."
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =============================================
+         SCREEN: PRAYER LIST
+         React Native: screens/PrayerListScreen.tsx
+         ============================================= -->
+    <section id="screen-prayer-list" class="screen screen--prayer-list" aria-label="Prayer List">
+
+      <div class="screen__header screen__header--back">
+        <button class="btn-back" onclick="navigateTo('screen-dashboard')" aria-label="Back to Dashboard">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12.5 5L7.5 10L12.5 15" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <h2 class="screen__title">Prayer List</h2>
+        <div class="header__spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="screen__scroll">
+
+        <!-- Add prayer form -->
+        <div class="card card--add-prayer">
+          <label class="input__label" for="new-prayer">Add a prayer request</label>
+          <div class="add-prayer__row">
+            <input class="input__text" id="new-prayer" type="text"
+                   placeholder="Who or what are you praying for?"
+                   maxlength="200"
+                   onkeydown="if(event.key==='Enter') addPrayer()" />
+            <button class="btn btn--icon" onclick="addPrayer()" aria-label="Add prayer request">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M9 3v12M3 9h12" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Active prayers -->
+        <div class="prayer-section">
+          <p class="section__eyebrow">Active Prayers</p>
+          <div class="prayer-list" id="prayer-list-active" aria-label="Active prayer requests">
+            <!-- Populated by script.js -->
+          </div>
+        </div>
+
+        <!-- Answered prayers (collapsible) -->
+        <div class="prayer-section">
+          <button class="section__toggle" onclick="toggleAnsweredPrayers()"
+                  aria-expanded="false" aria-controls="prayer-list-answered" id="answered-toggle-btn">
+            <span>Answered Prayers</span>
+            <svg class="toggle-chevron" id="answered-chevron" width="16" height="16" viewBox="0 0 16 16"
+                 fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="prayer-list prayer-list--answered hidden" id="prayer-list-answered"
+               aria-label="Answered prayer requests">
+            <!-- Populated by script.js -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =============================================
+         SCREEN: WEEKLY CONSISTENCY SCORE
+         React Native: screens/WeeklyScoreScreen.tsx
+         ============================================= -->
+    <section id="screen-weekly" class="screen screen--weekly" aria-label="Weekly Rhythm Score">
+
+      <div class="screen__header screen__header--back">
+        <button class="btn-back" onclick="navigateTo('screen-dashboard')" aria-label="Back to Dashboard">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12.5 5L7.5 10L12.5 15" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <h2 class="screen__title">Weekly Rhythm</h2>
+        <div class="header__spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="screen__scroll">
+
+        <!-- React Native Component: <RhythmScore score={score} /> -->
+        <!-- Large score ring -->
+        <div class="weekly__score-hero">
+          <div class="weekly__ring-wrap" aria-hidden="true">
+            <svg class="weekly__ring-svg" viewBox="0 0 160 160">
+              <circle class="weekly__ring-track" cx="80" cy="80" r="68"/>
+              <circle class="weekly__ring-progress" id="weekly-ring" cx="80" cy="80" r="68"
+                      transform="rotate(-90 80 80)"/>
+            </svg>
+            <div class="weekly__score-inner">
+              <span class="weekly__score-num" id="weekly-score-display" aria-live="polite">0</span>
+              <span class="weekly__score-pct">%</span>
+              <p class="weekly__score-label">Rhythm Score</p>
+            </div>
+          </div>
+          <p class="weekly__encouragement" id="weekly-encouragement">
+            You showed up beautifully this week. God treasures your faithfulness.
+          </p>
+        </div>
+
+        <!-- Day-by-day breakdown -->
+        <div class="card card--week-breakdown">
+          <p class="section__eyebrow">This Week</p>
+          <div class="week-breakdown" id="week-breakdown" role="list" aria-label="Daily habit completion"></div>
+        </div>
+
+        <!-- Habit streaks -->
+        <!-- React Native Component: <HabitStreakRows habits={habits} /> -->
+        <div class="card card--streaks">
+          <p class="section__eyebrow">Current Streaks</p>
+          <div class="streak-rows">
+            <div class="streak-row">
+              <span class="streak-row__name">Prayer</span>
+              <div class="streak-bar-wrap" aria-hidden="true">
+                <div class="streak-bar" style="width: 100%"></div>
+              </div>
+              <span class="streak-row__count">7 days</span>
+            </div>
+            <div class="streak-row">
+              <span class="streak-row__name">Scripture</span>
+              <div class="streak-bar-wrap" aria-hidden="true">
+                <div class="streak-bar" style="width: 71%"></div>
+              </div>
+              <span class="streak-row__count">5 days</span>
+            </div>
+            <div class="streak-row">
+              <span class="streak-row__name">Reflection</span>
+              <div class="streak-bar-wrap" aria-hidden="true">
+                <div class="streak-bar" style="width: 57%"></div>
+              </div>
+              <span class="streak-row__count">4 days</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4-week trend -->
+        <div class="card card--trend">
+          <p class="section__eyebrow">Last 4 Weeks</p>
+          <div class="trend-bars" id="trend-bars" aria-label="Trend over last 4 weeks"></div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =============================================
+         SCREEN: SETTINGS
+         React Native: screens/SettingsScreen.tsx
+         ============================================= -->
+    <section id="screen-settings" class="screen screen--settings" aria-label="Settings">
+
+      <div class="screen__header screen__header--back">
+        <button class="btn-back" onclick="navigateTo('screen-dashboard')" aria-label="Back to Dashboard">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12.5 5L7.5 10L12.5 15" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <h2 class="screen__title">Settings</h2>
+        <div class="header__spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="screen__scroll">
+
+        <!-- Reminders -->
+        <div class="settings-group">
+          <p class="settings-group__label">Reminders</p>
+
+          <div class="card card--setting">
+            <div class="setting__row">
+              <div class="setting__info">
+                <p class="setting__title">Morning Reminder</p>
+                <p class="setting__subtitle">Start your day with intention</p>
+              </div>
+              <!-- React Native Component: <ToggleSwitch /> -->
+              <label class="toggle" for="morning-toggle" aria-label="Toggle morning reminder">
+                <input type="checkbox" id="morning-toggle" checked onchange="toggleSetting('morning')" />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+            <div class="setting__time-row" id="morning-time-row">
+              <label class="setting__time-label" for="morning-time">Remind me at</label>
+              <input type="time" class="input__time" id="morning-time" value="07:00" />
+            </div>
+          </div>
+
+          <div class="card card--setting">
+            <div class="setting__row">
+              <div class="setting__info">
+                <p class="setting__title">Evening Reminder</p>
+                <p class="setting__subtitle">End your day in reflection</p>
+              </div>
+              <label class="toggle" for="evening-toggle" aria-label="Toggle evening reminder">
+                <input type="checkbox" id="evening-toggle" onchange="toggleSetting('evening')" />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+            <div class="setting__time-row hidden" id="evening-time-row">
+              <label class="setting__time-label" for="evening-time">Remind me at</label>
+              <input type="time" class="input__time" id="evening-time" value="20:00" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Rest + Grace -->
+        <div class="settings-group">
+          <p class="settings-group__label">Rest &amp; Grace</p>
+
+          <div class="card card--setting">
+            <div class="setting__row">
+              <div class="setting__info">
+                <p class="setting__title">Sabbath Mode</p>
+                <p class="setting__subtitle">Silence all reminders on Sunday</p>
+              </div>
+              <label class="toggle" for="sabbath-toggle" aria-label="Toggle Sabbath mode">
+                <input type="checkbox" id="sabbath-toggle" checked onchange="toggleSetting('sabbath')" />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="card card--setting">
+            <div class="setting__row">
+              <div class="setting__info">
+                <p class="setting__title">Grace Mode</p>
+                <p class="setting__subtitle">Show encouragement when you miss a day</p>
+              </div>
+              <label class="toggle" for="grace-toggle" aria-label="Toggle Grace mode">
+                <input type="checkbox" id="grace-toggle" checked onchange="toggleSetting('grace')" />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reading plan -->
+        <div class="settings-group">
+          <p class="settings-group__label">Reading Plan</p>
+          <div class="card card--setting">
+            <div class="setting__row">
+              <div class="setting__info">
+                <p class="setting__title">Current Plan</p>
+              </div>
+              <select class="input__select" id="reading-plan-select" aria-label="Select reading plan">
+                <option value="psalms">30-Day Psalms Journey</option>
+                <option value="proverbs">Proverbs for Wisdom</option>
+                <option value="gospels">Walking with Jesus (Gospels)</option>
+                <option value="nt">New Testament in 90 Days</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="settings-group">
+          <p class="settings-group__label">About</p>
+          <div class="card card--about">
+            <p class="about__name">Steady</p>
+            <p class="about__tagline">Build a steady rhythm with God.</p>
+            <p class="about__version">Version 1.0.0 · Prototype</p>
+            <p class="about__verse">
+              "Let us not become weary in doing good, for at the proper time we will reap
+              a harvest if we do not give up."
+              <span>Galatians 6:9</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =============================================
+         BOTTOM NAVIGATION
+         React Native: components/BottomNav.tsx
+         ============================================= -->
+    <nav id="bottom-nav" class="bottom-nav hidden" aria-label="Main app navigation">
+
+      <button class="nav-item is-active" data-screen="screen-dashboard"
+              onclick="navigateTo('screen-dashboard')" aria-label="Home" aria-current="true">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M3 9.5L11 3L19 9.5V19a1 1 0 01-1 1H14v-5H8v5H4a1 1 0 01-1-1V9.5Z" stroke-linejoin="round"/>
+        </svg>
+        <span>Home</span>
+      </button>
+
+      <button class="nav-item" data-screen="screen-prayer"
+              onclick="navigateTo('screen-prayer')" aria-label="Prayer">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M11 2C11 2 7 7 7 11C7 13.2 8.8 15 11 15C13.2 15 15 13.2 15 11C15 7 11 2 11 2Z" stroke-linejoin="round"/>
+          <path d="M11 15V20" stroke-linecap="round"/>
+          <path d="M8 20H14" stroke-linecap="round"/>
+        </svg>
+        <span>Prayer</span>
+      </button>
+
+      <button class="nav-item" data-screen="screen-bible"
+              onclick="navigateTo('screen-bible')" aria-label="Scripture">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M4 18.5C4 17.1 5.1 16 6.5 16H19" stroke-linecap="round"/>
+          <path d="M6.5 2H19V20H6.5C5.1 20 4 18.9 4 17.5V3.5C4 2.7 4.7 2 5.5 2H19" stroke-linejoin="round"/>
+        </svg>
+        <span>Scripture</span>
+      </button>
+
+      <button class="nav-item" data-screen="screen-journal"
+              onclick="navigateTo('screen-journal')" aria-label="Journal">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M11 19H20" stroke-linecap="round"/>
+          <path d="M15.5 3.5a2.121 2.121 0 013 3L7 18l-5 1 1-5L15.5 3.5Z" stroke-linejoin="round"/>
+        </svg>
+        <span>Journal</span>
+      </button>
+
+      <button class="nav-item" data-screen="screen-settings"
+              onclick="navigateTo('screen-settings')" aria-label="Settings">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7">
+          <circle cx="11" cy="11" r="3"/>
+          <path d="M11 2v2M11 18v2M2 11h2M18 11h2M4.9 4.9l1.4 1.4M15.7 15.7l1.4 1.4M4.9 17.1l1.4-1.4M15.7 6.3l1.4-1.4"/>
+        </svg>
+        <span>Settings</span>
+      </button>
+
+    </nav>
+
+  </div><!-- end #app -->
+
+  <script src="script.js"></script>
+</body>
+</html>

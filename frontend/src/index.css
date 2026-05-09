@@ -86,3 +86,46 @@ select option {
   font-size: 1rem;
   letter-spacing: 0.08em;
 }
+
+/* ── Shared screen layout classes ───────────────────────
+   Used by PrayerScreen, ScriptureScreen, JournalScreen
+   Future React Native: maps to View + Text styles
+──────────────────────────────────────────────────────── */
+.screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.screen-title {
+  color: var(--cream);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.screen-sub {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.screen-empty {
+  text-align: center;
+  padding: 52px 20px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+.screen-empty p {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.screen-empty-hint {
+  color: var(--text-muted) !important;
+  font-size: 0.8rem !important;
+  font-style: italic;
+}

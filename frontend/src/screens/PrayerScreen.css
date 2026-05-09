@@ -1,0 +1,187 @@
+.prayer-screen {
+  padding: 24px 20px;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Timer ────────────────────────────────────────────── */
+.timer-wrapper {
+  margin-bottom: 20px;
+}
+
+.btn-timer-toggle {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-card);
+  padding: 8px 16px;
+  border-radius: var(--radius-btn);
+  font-size: 0.8rem;
+  transition: var(--transition);
+  letter-spacing: 0.04em;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn-timer-toggle.active,
+.btn-timer-toggle:hover {
+  color: var(--gold);
+  border-color: rgba(201, 169, 110, 0.3);
+  background: var(--gold-glow);
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Progress ─────────────────────────────────────────── */
+.prayer-progress {
+  margin-bottom: 22px;
+}
+
+.prayer-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.prayer-progress-bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.prayer-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--green));
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* ── Add Form ─────────────────────────────────────────── */
+.prayer-add-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.prayer-add-form input {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn-add-request {
+  background: linear-gradient(135deg, var(--gold) 0%, #a0783e 100%);
+  color: #0a0f1e;
+  padding: 12px 18px;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: var(--transition);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-add-request:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201, 169, 110, 0.28);
+}
+
+/* ── Request List ─────────────────────────────────────── */
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+/* ── Answered Section ─────────────────────────────────── */
+.answered-section {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 20px;
+  margin-bottom: 28px;
+}
+
+.answered-toggle {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  padding: 0;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.answered-toggle:hover {
+  color: var(--cream-dim);
+  transform: none;
+  box-shadow: none;
+}
+
+.toggle-caret {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.answered-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.answered-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(74, 148, 116, 0.04);
+  border: 1px solid rgba(74, 148, 116, 0.1);
+  border-radius: 12px;
+}
+
+.answered-check {
+  color: var(--green);
+  font-size: 0.82rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.answered-text {
+  flex: 1;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  text-decoration: line-through;
+  text-decoration-color: rgba(74, 148, 116, 0.35);
+}
+
+.btn-remove-answered {
+  background: none;
+  color: var(--text-muted);
+  border: none;
+  font-size: 0.72rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.btn-remove-answered:hover {
+  color: #ff9090;
+  transform: none;
+  box-shadow: none;
+}

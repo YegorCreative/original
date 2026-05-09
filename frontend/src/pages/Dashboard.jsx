@@ -5,6 +5,10 @@ import AuthContext from '../context/AuthContext'
 import StreakBadge from '../components/StreakBadge'
 import PrayerTimer from '../components/PrayerTimer'
 import Leaderboard from '../components/Leaderboard'
+// Future React Native: import as native screen components
+import PrayerScreen from '../screens/PrayerScreen'
+import ScriptureScreen from '../screens/ScriptureScreen'
+import JournalScreen from '../screens/JournalScreen'
 import './Dashboard.css'
 
 const CATEGORY_ICONS = {
@@ -144,162 +148,187 @@ export default function Dashboard() {
         </div>
       </header>
 
+      {/* Future React Native: <Tab.Navigator> wrapping each screen */}
       <main className="dashboard-content">
-        <div className="dashboard-top">
-          <h2>Your Daily Habits</h2>
-          <button onClick={() => setShowForm(!showForm)} className="btn-add">
-            {showForm ? 'Cancel' : '+ Add Habit'}
-          </button>
-        </div>
 
-        {showForm && (
-          <form className="habit-form" onSubmit={handleCreateHabit}>
-            <div className="form-group">
-              <label>Habit Name</label>
-              <input
-                type="text"
-                value={newHabit.name}
-                onChange={(e) => setNewHabit({ ...newHabit, name: e.target.value })}
-                required
-                placeholder="e.g., Read Bible Daily"
-              />
+        {/* ── Home Tab ────────────────────────────────────── */}
+        {activeNav === 'home' && (
+          <div className="home-screen">
+            <div className="dashboard-top">
+              <h2>Your Daily Habits</h2>
+              <button onClick={() => setShowForm(!showForm)} className="btn-add">
+                {showForm ? 'Cancel' : '+ Add Habit'}
+              </button>
             </div>
 
-            <div className="form-group">
-              <label>Description</label>
-              <textarea
-                value={newHabit.description}
-                onChange={(e) => setNewHabit({ ...newHabit, description: e.target.value })}
-                placeholder="Why is this habit important to you?"
-                rows="2"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Category</label>
-              <select
-                value={newHabit.category}
-                onChange={(e) => setNewHabit({ ...newHabit, category: e.target.value })}
-              >
-                <option value="spiritual">Spiritual</option>
-                <option value="health">Health</option>
-                <option value="learning">Learning</option>
-                <option value="fitness">Fitness</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            <button type="submit" className="btn-primary">Create Habit</button>
-          </form>
-        )}
-
-        <div className="weekly-rhythm">
-          <div className="weekly-header">
-            <span className="weekly-title">This Week</span>
-            <span className="weekly-score">{weekScore}%</span>
-          </div>
-          <div className="weekly-days">
-            {weekDays.map((day, i) => (
-              <div
-                key={i}
-                className={`day-dot${weekCompleted[i] ? ' filled' : ''}${i === today ? ' today' : ''}`}
-              >
-                <div className="day-dot-marker" />
-                <span className="day-label">{day}</span>
-              </div>
-            ))}
-          </div>
-          <p className="weekly-encouragement">
-            {weekScore >= 80
-              ? 'A steady rhythm. Grace is at work in you.'
-              : weekScore >= 50
-                ? "You're showing up. That's what matters."
-                : 'Grace meets you here. Begin again today.'}
-          </p>
-        </div>
-
-        <div className="habits-grid">
-          {habits.length === 0 ? (
-            <div className="no-habits">
-              <p>No habits yet. Start your journey!</p>
-              <button className="btn-add" onClick={() => setShowForm(true)}>+ Add Your First Habit</button>
-            </div>
-          ) : (
-            habits.map(habit => (
-              <div
-                key={habit.id}
-                className={`habit-card ${habit.completedToday ? 'completed' : ''} ${habit.category}`}
-              >
-                <div className="habit-header">
-                  <span className="habit-icon">{CATEGORY_ICONS[habit.category] || '⭐'}</span>
-                  <h3>{habit.name}</h3>
-                  <button
-                    className="btn-delete"
-                    onClick={() => handleDeleteHabit(habit.id)}
-                    title="Delete habit"
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                {habit.description && (
-                  <p className="habit-description">{habit.description}</p>
-                )}
-
-                <StreakBadge
-                  currentStreak={parseInt(habit.currentStreak) || 0}
-                  longestStreak={parseInt(habit.longestStreak) || 0}
-                />
-
-                <div className="habit-footer">
-                  <button
-                    onClick={() => handleLogHabit(habit.id)}
-                    className={`btn-log ${habit.completedToday ? 'done' : ''}`}
-                  >
-                    {habit.completedToday ? '✓ Done Today!' : '✓ Mark Done'}
-                  </button>
-
-                  {habit.category === 'spiritual' && (
-                    <button
-                      className="btn-pray"
-                      onClick={() => setPrayerHabitId(
-                        prayerHabitId === habit.id ? null : habit.id
-                      )}
-                    >
-                      Pray
-                    </button>
-                  )}
-                </div>
-
-                {prayerHabitId === habit.id && (
-                  <PrayerTimer
-                    onComplete={() => {
-                      handleLogHabit(habit.id)
-                      setPrayerHabitId(null)
-                    }}
+            {showForm && (
+              <form className="habit-form" onSubmit={handleCreateHabit}>
+                <div className="form-group">
+                  <label>Habit Name</label>
+                  <input
+                    type="text"
+                    value={newHabit.name}
+                    onChange={(e) => setNewHabit({ ...newHabit, name: e.target.value })}
+                    required
+                    placeholder="e.g., Morning Prayer"
                   />
-                )}
-              </div>
-            ))
-          )}
-        </div>
+                </div>
 
-        {!habits.some(h => h.completedToday) && (
-          <div className="grace-message">
-            <p>Original Actions helps you return gently—to prayer, Scripture, and reflection. Grace meets you here. Begin again today.</p>
+                <div className="form-group">
+                  <label>Description</label>
+                  <textarea
+                    value={newHabit.description}
+                    onChange={(e) => setNewHabit({ ...newHabit, description: e.target.value })}
+                    placeholder="Why is this habit important to you?"
+                    rows="2"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Category</label>
+                  <select
+                    value={newHabit.category}
+                    onChange={(e) => setNewHabit({ ...newHabit, category: e.target.value })}
+                  >
+                    <option value="spiritual">Spiritual</option>
+                    <option value="health">Health</option>
+                    <option value="learning">Learning</option>
+                    <option value="fitness">Fitness</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <button type="submit" className="btn-primary">Create Habit</button>
+              </form>
+            )}
+
+            <div className="weekly-rhythm">
+              <div className="weekly-header">
+                <span className="weekly-title">This Week</span>
+                <span className="weekly-score">{weekScore}%</span>
+              </div>
+              <div className="weekly-days">
+                {weekDays.map((day, i) => (
+                  <div
+                    key={i}
+                    className={`day-dot${weekCompleted[i] ? ' filled' : ''}${i === today ? ' today' : ''}`}
+                  >
+                    <div className="day-dot-marker" />
+                    <span className="day-label">{day}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="weekly-encouragement">
+                {weekScore >= 80
+                  ? 'A steady rhythm. Grace is at work in you.'
+                  : weekScore >= 50
+                    ? "You're showing up. That's what matters."
+                    : 'Grace meets you here. Begin again today.'}
+              </p>
+            </div>
+
+            <div className="habits-grid">
+              {habits.length === 0 ? (
+                <div className="no-habits">
+                  <p>No habits yet.</p>
+                  <button className="btn-add" onClick={() => setShowForm(true)}>+ Add Your First Habit</button>
+                </div>
+              ) : (
+                habits.map(habit => (
+                  <div
+                    key={habit.id}
+                    className={`habit-card ${habit.completedToday ? 'completed' : ''} ${habit.category}`}
+                  >
+                    <div className="habit-header">
+                      <span className="habit-icon">{CATEGORY_ICONS[habit.category] || '★'}</span>
+                      <h3>{habit.name}</h3>
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDeleteHabit(habit.id)}
+                        title="Delete habit"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    {habit.description && (
+                      <p className="habit-description">{habit.description}</p>
+                    )}
+
+                    <StreakBadge
+                      currentStreak={parseInt(habit.currentStreak) || 0}
+                      longestStreak={parseInt(habit.longestStreak) || 0}
+                    />
+
+                    <div className="habit-footer">
+                      <button
+                        onClick={() => handleLogHabit(habit.id)}
+                        className={`btn-log ${habit.completedToday ? 'done' : ''}`}
+                      >
+                        {habit.completedToday ? '✓ Done Today' : '✓ Mark Done'}
+                      </button>
+
+                      {habit.category === 'spiritual' && (
+                        <button
+                          className="btn-pray"
+                          onClick={() => setPrayerHabitId(
+                            prayerHabitId === habit.id ? null : habit.id
+                          )}
+                        >
+                          Pray
+                        </button>
+                      )}
+                    </div>
+
+                    {prayerHabitId === habit.id && (
+                      <PrayerTimer
+                        onComplete={() => {
+                          handleLogHabit(habit.id)
+                          setPrayerHabitId(null)
+                        }}
+                      />
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+
+            {!habits.some(h => h.completedToday) && (
+              <div className="grace-message">
+                <p>Original Actions helps you return gently — to prayer, Scripture, and reflection. Grace meets you here. Begin again today.</p>
+              </div>
+            )}
+
+            <Leaderboard />
           </div>
         )}
 
-        <Leaderboard />
+        {/* ── Prayer Tab ──────────────────────────────────── */}
+        {activeNav === 'prayer' && <PrayerScreen />}
+
+        {/* ── Scripture Tab ───────────────────────────────── */}
+        {activeNav === 'scripture' && <ScriptureScreen />}
+
+        {/* ── Journal Tab ─────────────────────────────────── */}
+        {activeNav === 'journal' && <JournalScreen />}
+
+        {/* ── Settings Tab (Phase 4) ───────────────────────── */}
+        {activeNav === 'settings' && (
+          <div className="settings-screen">
+            <h2 className="screen-title">Settings</h2>
+            <p className="screen-sub">Reminder preferences and more are coming in Phase 4.</p>
+          </div>
+        )}
+
       </main>
 
       <nav className="bottom-nav">
         {[
-          { id: 'home', icon: '⌂', label: 'Home' },
-          { id: 'prayer', icon: '◎', label: 'Prayer' },
+          { id: 'home',      icon: '⌂', label: 'Home'      },
+          { id: 'prayer',    icon: '◎', label: 'Prayer'    },
           { id: 'scripture', icon: '□', label: 'Scripture' },
-          { id: 'journal', icon: '◊', label: 'Journal' },
-          { id: 'settings', icon: '⚙', label: 'Settings' },
+          { id: 'journal',   icon: '◊', label: 'Journal'   },
+          { id: 'settings',  icon: '⚙', label: 'Settings'  },
         ].map(tab => (
           <button
             key={tab.id}
@@ -314,3 +343,4 @@ export default function Dashboard() {
     </div>
   )
 }
+

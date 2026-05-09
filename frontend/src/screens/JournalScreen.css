@@ -1,0 +1,160 @@
+.journal-screen {
+  padding: 24px 20px;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Entry Count Badge ────────────────────────────────── */
+.entry-count-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--gold-glow);
+  border: 1px solid rgba(201, 169, 110, 0.22);
+  border-radius: 12px;
+  padding: 8px 16px;
+  min-width: 56px;
+}
+
+.ecb-num {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.ecb-label {
+  font-size: 0.63rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+}
+
+/* ── Compose Area ─────────────────────────────────────── */
+.journal-compose {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 22px;
+  margin-bottom: 28px;
+}
+
+.prompt-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.prompt-chip {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-card);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.prompt-chip.active {
+  background: var(--gold-glow);
+  color: var(--gold-light);
+  border-color: rgba(201, 169, 110, 0.35);
+}
+
+.prompt-chip:hover:not(.active) {
+  color: var(--cream-dim);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: none;
+  box-shadow: none;
+}
+
+.compose-prompt {
+  color: var(--cream-dim);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-bottom: 14px;
+  line-height: 1.65;
+}
+
+.journal-textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 110px;
+  margin-bottom: 14px;
+}
+
+.compose-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-next-prompt {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+  transition: var(--transition);
+}
+
+.btn-next-prompt:hover {
+  color: var(--cream-dim);
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-save-entry {
+  background: linear-gradient(135deg, var(--gold) 0%, #a0783e 100%);
+  color: #0a0f1e;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.btn-save-entry:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(201, 169, 110, 0.28);
+}
+
+.btn-save-entry:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Entries ──────────────────────────────────────────── */
+.entries-section {
+  margin-bottom: 24px;
+}
+
+.entries-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.entries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

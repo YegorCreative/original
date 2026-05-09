@@ -89,7 +89,7 @@ export default function Dashboard() {
     return <div className="loading">Loading habits...</div>
   }
 
-  const totalStreak = habits.reduce((sum, h) => sum + (h.currentstreak || 0), 0)
+  const totalStreak = habits.reduce((sum, h) => sum + (h.currentStreak || 0), 0)
 
   return (
     <div className="dashboard">
@@ -163,7 +163,7 @@ export default function Dashboard() {
             habits.map(habit => (
               <div
                 key={habit.id}
-                className={`habit-card ${habit.completedtoday ? 'completed' : ''} ${habit.category}`}
+                className={`habit-card ${habit.completedToday ? 'completed' : ''} ${habit.category}`}
               >
                 <div className="habit-header">
                   <span className="habit-icon">{CATEGORY_ICONS[habit.category] || '⭐'}</span>
@@ -182,16 +182,16 @@ export default function Dashboard() {
                 )}
 
                 <StreakBadge
-                  currentStreak={parseInt(habit.currentstreak) || 0}
-                  longestStreak={parseInt(habit.longeststreak) || 0}
+                  currentStreak={parseInt(habit.currentStreak) || 0}
+                  longestStreak={parseInt(habit.longestStreak) || 0}
                 />
 
                 <div className="habit-footer">
                   <button
                     onClick={() => handleLogHabit(habit.id)}
-                    className={`btn-log ${habit.completedtoday ? 'done' : ''}`}
+                    className={`btn-log ${habit.completedToday ? 'done' : ''}`}
                   >
-                    {habit.completedtoday ? '✓ Done Today!' : '✓ Mark Done'}
+                    {habit.completedToday ? '✓ Done Today!' : '✓ Mark Done'}
                   </button>
 
                   {habit.category === 'spiritual' && (

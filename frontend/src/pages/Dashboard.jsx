@@ -130,7 +130,7 @@ export default function Dashboard() {
     <div className="dashboard">
       {isGuest && (
         <div className="guest-banner">
-          👋 You're in guest mode — data is not saved. <a href="/login">Log in</a> or <a href="/signup">sign up</a> to save your habits.
+          You're in guest mode — data is not saved. <a href="/login">Log in</a> or <a href="/signup">sign up</a> to save your habits.
         </div>
       )}
       <header className="dashboard-header">
@@ -181,7 +181,7 @@ export default function Dashboard() {
                 value={newHabit.category}
                 onChange={(e) => setNewHabit({ ...newHabit, category: e.target.value })}
               >
-              <option value="spiritual">Spiritual</option>
+                <option value="spiritual">Spiritual</option>
                 <option value="health">Health</option>
                 <option value="learning">Learning</option>
                 <option value="fitness">Fitness</option>
@@ -266,7 +266,7 @@ export default function Dashboard() {
                         prayerHabitId === habit.id ? null : habit.id
                       )}
                     >
-                      🙏 Pray
+                      Pray
                     </button>
                   )}
                 </div>

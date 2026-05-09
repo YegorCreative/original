@@ -1,49 +1,54 @@
 .prayer-timer {
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
   padding: 24px;
-  color: white;
   text-align: center;
   margin-top: 20px;
 }
 
 .prayer-timer h3 {
-  font-size: 1.3rem;
+  font-size: 0.95rem;
   margin-bottom: 20px;
-  letter-spacing: 0.05em;
-  color: #a78bfa;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .duration-picker {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
 .duration-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 2px solid transparent;
-  padding: 8px 14px;
+  background: transparent;
+  color: var(--cream-dim);
+  border: 1px solid var(--border-card);
+  padding: 7px 13px;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: var(--transition);
+  font-family: inherit;
 }
 
 .duration-btn:hover {
-  background: rgba(167, 139, 250, 0.2);
-  border-color: #a78bfa;
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: none;
+  box-shadow: none;
 }
 
 .duration-btn.active {
-  background: #a78bfa;
-  color: white;
-  border-color: #a78bfa;
+  background: var(--gold-glow);
+  color: var(--gold-light);
+  border-color: var(--gold);
   transform: none;
-  box-shadow: 0 0 15px rgba(167, 139, 250, 0.4);
+  box-shadow: 0 0 12px var(--gold-glow);
 }
 
 /* Circular progress ring */
@@ -62,17 +67,17 @@
 
 .ring-bg {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.1);
-  stroke-width: 8;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 6;
 }
 
 .ring-fill {
   fill: none;
-  stroke: #a78bfa;
-  stroke-width: 8;
+  stroke: var(--gold);
+  stroke-width: 6;
   stroke-linecap: round;
   transition: stroke-dashoffset 1s linear;
-  filter: drop-shadow(0 0 6px rgba(167, 139, 250, 0.7));
+  filter: drop-shadow(0 0 6px rgba(201, 169, 110, 0.5));
 }
 
 .timer-text {
@@ -83,11 +88,14 @@
   font-size: 1.8rem;
   font-weight: 700;
   letter-spacing: 0.05em;
+  color: var(--cream);
 }
 
 .timer-done {
-  font-size: 1.4rem;
+  font-size: 1rem;
   margin: 20px 0;
+  color: var(--green);
+  letter-spacing: 0.05em;
 }
 
 .timer-controls {
@@ -98,35 +106,40 @@
 }
 
 .btn-start {
-  background: linear-gradient(135deg, #a78bfa, #7c3aed);
-  color: white;
+  background: linear-gradient(135deg, var(--gold) 0%, #a0783e 100%);
+  color: #0a0f1e;
   padding: 12px 30px;
   border: none;
   border-radius: 30px;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.92rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: var(--transition);
+  font-family: inherit;
 }
 
 .btn-start:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(201, 169, 110, 0.3);
 }
 
 .btn-pause, .btn-reset {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--cream-dim);
   padding: 10px 22px;
-  border: none;
+  border: 1px solid var(--border-card);
   border-radius: 30px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: var(--transition);
+  font-family: inherit;
 }
 
 .btn-pause:hover, .btn-reset:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--cream);
+  transform: none;
+  box-shadow: none;
 }
 
 /* Hold to Pray */
@@ -136,38 +149,42 @@
 
 .btn-hold {
   background: transparent;
-  color: #a78bfa;
-  border: 2px solid #a78bfa;
+  color: var(--cream-dim);
+  border: 1px solid var(--border-card);
   padding: 14px 32px;
   border-radius: 30px;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 600;
   cursor: pointer;
   user-select: none;
-  transition: all 0.2s;
+  transition: var(--transition);
   touch-action: none;
+  font-family: inherit;
 }
 
 .btn-hold.holding {
-  background: #a78bfa;
-  color: white;
-  animation: pulse 1.5s infinite;
+  background: var(--gold-glow);
+  color: var(--gold-light);
+  border-color: var(--gold);
+  animation: goldPulse 1.5s infinite;
 }
 
 .btn-hold:hover:not(.holding) {
-  background: rgba(167, 139, 250, 0.1);
+  border-color: rgba(201, 169, 110, 0.3);
+  color: var(--cream);
   transform: none;
   box-shadow: none;
 }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.5); }
-  50%       { box-shadow: 0 0 0 12px rgba(167, 139, 250, 0); }
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 169, 110, 0.35); }
+  50%       { box-shadow: 0 0 0 12px rgba(201, 169, 110, 0); }
 }
 
 .hold-hint {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
   margin-top: 10px;
   padding: 0 10px;
+  line-height: 1.5;
 }

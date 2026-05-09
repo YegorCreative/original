@@ -1,6 +1,6 @@
-# Original Actions - Setup Guide
+# Original Actions — Setup Guide
 
-A full-stack habit tracking app built with Node.js/Express backend and React frontend.
+A premium spiritual rhythm and habit-tracking app for prayer, Scripture, reflection, and meaningful daily actions.
 
 ## Prerequisites
 
@@ -101,19 +101,21 @@ The frontend will run on `http://localhost:3000`
 ## Features
 
 ### Current MVP
-- ✅ User authentication (signup/login)
-- ✅ Create and manage daily habits
+- ✅ Auth flow (login, signup, guest mode)
+- ✅ Create and manage daily spiritual habits
 - ✅ Log daily habit completion
-- ✅ View habit list with categories
-- ✅ Delete habits
+- ✅ Prayer timer with haptic feedback
+- ✅ Weekly rhythm score (7-day grid)
+- ✅ Grace-based encouragement messaging
+- ✅ Community rhythm leaderboard
 
 ### Planned Features
-- 🔄 Streak counting and visualization
-- 🔄 Notifications/reminders
-- 🔄 Social sharing
-- 🔄 Community leaderboard
-- 🔄 Haptic feedback for prayer sessions
-- 🔄 Statistics and analytics
+- 🔄 Scripture reading tracker with passage prompts
+- 🔄 Reflection journal with daily writing prompts
+- 🔄 Prayer request list with answered prayer log
+- 🔄 Gentle push notification reminders
+- 🔄 Offline support (PWA)
+- 🔄 React Native / Expo conversion
 
 ## Development Notes
 

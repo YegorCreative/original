@@ -1,0 +1,32 @@
+.streak-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+
+.flame {
+  font-size: 1.4rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 4px currentColor);
+  transition: color 0.4s;
+}
+
+.streak-numbers {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.streak-current {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #333;
+}
+
+.streak-label {
+  font-size: 0.7rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

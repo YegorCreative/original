@@ -1,6 +1,7 @@
 const express = require('express');
 const { verifyToken } = require('../middleware/auth');
 const pool = require('../db');
+const { calculateStreak } = require('../utils/streak');
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.post('/', verifyToken, async (req, res) => {
   }
 });
 
-// Get user's habits
+// Get user's habits with streaks
 router.get('/', verifyToken, async (req, res) => {
   const userId = req.userId;
 
@@ -36,7 +37,29 @@ router.get('/', verifyToken, async (req, res) => {
       [userId]
     );
 
-    res.json(result.rows);
+    // Fetch completed log dates for each habit and compute streaks
+    const habits = await Promise.all(result.rows.map(async (habit) => {
+      const logsRes = await pool.query(
+        `SELECT log_date FROM habit_logs WHERE habit_id = $1 AND completed = true ORDER BY log_date DESC`,
+        [habit.id]
+      );
+      const logDates = logsRes.rows.map(r => r.log_date instanceof Date
+        ? r.log_date.toISOString().split('T')[0]
+        : String(r.log_date).split('T')[0]);
+      const streak = calculateStreak(logDates);
+
+      // Check if today is already logged
+      const todayStr = new Date().toISOString().split('T')[0];
+      const todayLog = await pool.query(
+        `SELECT completed FROM habit_logs WHERE habit_id = $1 AND log_date = $2`,
+        [habit.id, todayStr]
+      );
+      const completedToday = todayLog.rows.length > 0 && todayLog.rows[0].completed;
+
+      return { ...habit, ...streak, completedToday };
+    }));
+
+    res.json(habits);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server error' });

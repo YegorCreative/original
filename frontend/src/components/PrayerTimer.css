@@ -1,0 +1,173 @@
+.prayer-timer {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-radius: 16px;
+  padding: 24px;
+  color: white;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.prayer-timer h3 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  letter-spacing: 0.05em;
+  color: #a78bfa;
+}
+
+.duration-picker {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.duration-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 2px solid transparent;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.duration-btn:hover {
+  background: rgba(167, 139, 250, 0.2);
+  border-color: #a78bfa;
+}
+
+.duration-btn.active {
+  background: #a78bfa;
+  color: white;
+  border-color: #a78bfa;
+  transform: none;
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.4);
+}
+
+/* Circular progress ring */
+.timer-display {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 20px;
+}
+
+.progress-ring {
+  width: 140px;
+  height: 140px;
+  transform: rotate(-90deg);
+}
+
+.ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 8;
+}
+
+.ring-fill {
+  fill: none;
+  stroke: #a78bfa;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+  filter: drop-shadow(0 0 6px rgba(167, 139, 250, 0.7));
+}
+
+.timer-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.timer-done {
+  font-size: 1.4rem;
+  margin: 20px 0;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.btn-start {
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+}
+
+.btn-pause, .btn-reset {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-pause:hover, .btn-reset:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Hold to Pray */
+.hold-section {
+  margin-top: 16px;
+}
+
+.btn-hold {
+  background: transparent;
+  color: #a78bfa;
+  border: 2px solid #a78bfa;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  touch-action: none;
+}
+
+.btn-hold.holding {
+  background: #a78bfa;
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.btn-hold:hover:not(.holding) {
+  background: rgba(167, 139, 250, 0.1);
+  transform: none;
+  box-shadow: none;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.5); }
+  50%       { box-shadow: 0 0 0 12px rgba(167, 139, 250, 0); }
+}
+
+.hold-hint {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  margin-top: 10px;
+  padding: 0 10px;
+}

@@ -2,13 +2,32 @@ import { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import AuthContext from '../context/AuthContext'
+import StreakBadge from '../components/StreakBadge'
+import PrayerTimer from '../components/PrayerTimer'
+import Leaderboard from '../components/Leaderboard'
 import './Dashboard.css'
+
+const CATEGORY_ICONS = {
+  spiritual: '✝️',
+  health: '🥗',
+  learning: '📚',
+  fitness: '💪',
+  other: '⭐',
+}
+
+// Trigger haptic feedback on the device when a habit is logged
+function triggerLogHaptic() {
+  if (navigator.vibrate) {
+    navigator.vibrate([80, 40, 80])
+  }
+}
 
 export default function Dashboard() {
   const [habits, setHabits] = useState([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
-  const [newHabit, setNewHabit] = useState({ name: '', description: '', category: 'other' })
+  const [prayerHabitId, setPrayerHabitId] = useState(null)
+  const [newHabit, setNewHabit] = useState({ name: '', description: '', category: 'spiritual' })
   const navigate = useNavigate()
   const { logout } = useContext(AuthContext)
 
@@ -42,6 +61,7 @@ export default function Dashboard() {
 
   const handleLogHabit = async (habitId) => {
     try {
+      triggerLogHaptic()
       await axios.post(`/api/habits/${habitId}/log`)
       fetchHabits()
     } catch (error) {
@@ -69,11 +89,19 @@ export default function Dashboard() {
     return <div className="loading">Loading habits...</div>
   }
 
+  const totalStreak = habits.reduce((sum, h) => sum + (h.currentstreak || 0), 0)
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>Original Actions</h1>
-        <button onClick={handleLogout} className="btn-logout">Logout</button>
+        <div>
+          <h1>Original Actions</h1>
+          <p className="header-sub">Build the habit. Shape the life.</p>
+        </div>
+        <div className="header-right">
+          <span className="total-streak" title="Sum of all current streaks">🔥 {totalStreak} total days</span>
+          <button onClick={handleLogout} className="btn-logout">Logout</button>
+        </div>
       </header>
 
       <main className="dashboard-content">
@@ -103,7 +131,7 @@ export default function Dashboard() {
                 value={newHabit.description}
                 onChange={(e) => setNewHabit({ ...newHabit, description: e.target.value })}
                 placeholder="Why is this habit important to you?"
-                rows="3"
+                rows="2"
               />
             </div>
 
@@ -113,11 +141,11 @@ export default function Dashboard() {
                 value={newHabit.category}
                 onChange={(e) => setNewHabit({ ...newHabit, category: e.target.value })}
               >
-                <option value="spiritual">Spiritual</option>
-                <option value="health">Health</option>
-                <option value="learning">Learning</option>
-                <option value="fitness">Fitness</option>
-                <option value="other">Other</option>
+                <option value="spiritual">✝️ Spiritual</option>
+                <option value="health">🥗 Health</option>
+                <option value="learning">📚 Learning</option>
+                <option value="fitness">💪 Fitness</option>
+                <option value="other">⭐ Other</option>
               </select>
             </div>
 
@@ -127,11 +155,18 @@ export default function Dashboard() {
 
         <div className="habits-grid">
           {habits.length === 0 ? (
-            <p className="no-habits">No habits yet. Start your journey by creating your first habit!</p>
+            <div className="no-habits">
+              <p>No habits yet. Start your journey!</p>
+              <button className="btn-add" onClick={() => setShowForm(true)}>+ Add Your First Habit</button>
+            </div>
           ) : (
             habits.map(habit => (
-              <div key={habit.id} className="habit-card">
+              <div
+                key={habit.id}
+                className={`habit-card ${habit.completedtoday ? 'completed' : ''} ${habit.category}`}
+              >
                 <div className="habit-header">
+                  <span className="habit-icon">{CATEGORY_ICONS[habit.category] || '⭐'}</span>
                   <h3>{habit.name}</h3>
                   <button
                     className="btn-delete"
@@ -141,18 +176,50 @@ export default function Dashboard() {
                     ✕
                   </button>
                 </div>
-                {habit.description && <p className="habit-description">{habit.description}</p>}
-                <div className="habit-category">{habit.category}</div>
-                <button
-                  onClick={() => handleLogHabit(habit.id)}
-                  className="btn-log"
-                >
-                  ✓ Mark Today as Done
-                </button>
+
+                {habit.description && (
+                  <p className="habit-description">{habit.description}</p>
+                )}
+
+                <StreakBadge
+                  currentStreak={parseInt(habit.currentstreak) || 0}
+                  longestStreak={parseInt(habit.longeststreak) || 0}
+                />
+
+                <div className="habit-footer">
+                  <button
+                    onClick={() => handleLogHabit(habit.id)}
+                    className={`btn-log ${habit.completedtoday ? 'done' : ''}`}
+                  >
+                    {habit.completedtoday ? '✓ Done Today!' : '✓ Mark Done'}
+                  </button>
+
+                  {habit.category === 'spiritual' && (
+                    <button
+                      className="btn-pray"
+                      onClick={() => setPrayerHabitId(
+                        prayerHabitId === habit.id ? null : habit.id
+                      )}
+                    >
+                      🙏 Pray
+                    </button>
+                  )}
+                </div>
+
+                {prayerHabitId === habit.id && (
+                  <PrayerTimer
+                    onComplete={() => {
+                      handleLogHabit(habit.id)
+                      setPrayerHabitId(null)
+                    }}
+                  />
+                )}
               </div>
             ))
           )}
         </div>
+
+        <Leaderboard />
       </main>
     </div>
   )

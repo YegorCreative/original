@@ -7,8 +7,9 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://improved-palm-tree-7rxrjxvx65vhr79x-5000.app.github.dev',
         changeOrigin: true,
+        secure: false,
       }
     }
   }

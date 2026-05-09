@@ -1,3 +1,25 @@
+:root {
+  --bg-primary: #0a0f1e;
+  --bg-secondary: #0f1628;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --gold: #c9a96e;
+  --gold-light: #e8c98a;
+  --gold-glow: rgba(201, 169, 110, 0.15);
+  --cream: #f0ead6;
+  --cream-dim: rgba(240, 234, 214, 0.55);
+  --cream-muted: rgba(240, 234, 214, 0.28);
+  --green: #4a9474;
+  --green-glow: rgba(74, 148, 116, 0.2);
+  --text-primary: #f0ead6;
+  --text-secondary: rgba(240, 234, 214, 0.55);
+  --text-muted: rgba(240, 234, 214, 0.28);
+  --radius-card: 20px;
+  --radius-btn: 12px;
+  --transition: all 0.25s ease;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,12 +27,11 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
 }
 
@@ -23,28 +44,45 @@ body {
 button {
   cursor: pointer;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-btn);
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-input, textarea {
-  padding: 10px 12px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
+  transition: var(--transition);
   font-family: inherit;
 }
 
-input:focus, textarea:focus {
+input, textarea, select {
+  padding: 12px 14px;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-btn);
+  font-size: 1rem;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+input:focus, textarea:focus, select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+select option {
+  background: #1a2240;
+  color: var(--text-primary);
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
 }

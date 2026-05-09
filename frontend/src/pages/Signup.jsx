@@ -45,7 +45,7 @@ export default function Signup() {
     <div className="auth-container">
       <div className="auth-card">
         <h1>Original Actions</h1>
-        <p className="subtitle">Start Building Your Habits Today</p>
+        <p className="subtitle">Return to what matters.</p>
 
         {error && <div className="error-message">{error}</div>}
 

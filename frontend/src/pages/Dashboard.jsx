@@ -9,10 +9,10 @@ import './Dashboard.css'
 
 const CATEGORY_ICONS = {
   spiritual: '✝️',
-  health: '🥗',
-  learning: '📚',
-  fitness: '💪',
-  other: '⭐',
+  health: '♥',
+  learning: '□',
+  fitness: '○',
+  other: '★',
 }
 
 // Trigger haptic feedback on the device when a habit is logged
@@ -23,10 +23,10 @@ function triggerLogHaptic() {
 }
 
 const MOCK_HABITS = [
-  { id: 1, name: 'Morning Prayer', description: 'Start the day with gratitude', category: 'spiritual', currentStreak: 7, longestStreak: 14, completedToday: false, total_completed: 21 },
-  { id: 2, name: 'Read Bible', description: 'One chapter per day', category: 'spiritual', currentStreak: 3, longestStreak: 10, completedToday: true, total_completed: 15 },
-  { id: 3, name: 'Morning Run', description: '30 minutes outside', category: 'fitness', currentStreak: 5, longestStreak: 12, completedToday: false, total_completed: 18 },
-  { id: 4, name: 'Read 20 Pages', description: 'Non-fiction growth book', category: 'learning', currentStreak: 2, longestStreak: 8, completedToday: false, total_completed: 10 },
+  { id: 1, name: 'Morning Prayer', description: 'Begin in stillness and gratitude', category: 'spiritual', currentStreak: 7, longestStreak: 14, completedToday: false, total_completed: 21 },
+  { id: 2, name: 'Scripture Reading', description: 'One passage, slowly and prayerfully', category: 'spiritual', currentStreak: 3, longestStreak: 10, completedToday: true, total_completed: 15 },
+  { id: 3, name: 'Evening Reflection', description: 'Journal one thing God is teaching you', category: 'spiritual', currentStreak: 5, longestStreak: 7, completedToday: false, total_completed: 12 },
+  { id: 4, name: 'Meaningful Action', description: 'Serve or encourage someone today', category: 'other', currentStreak: 2, longestStreak: 8, completedToday: false, total_completed: 10 },
 ]
 
 export default function Dashboard() {
@@ -38,6 +38,12 @@ export default function Dashboard() {
   const navigate = useNavigate()
   const { token, logout } = useContext(AuthContext)
   const isGuest = token === 'guest'
+  const [activeNav, setActiveNav] = useState('home')
+
+  const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+  const weekCompleted = [true, true, false, true, habits.some(h => h.completedToday), false, false]
+  const today = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1
+  const weekScore = Math.round((weekCompleted.filter(Boolean).length / weekDays.length) * 100)
 
   useEffect(() => {
     fetchHabits()
@@ -130,10 +136,10 @@ export default function Dashboard() {
       <header className="dashboard-header">
         <div>
           <h1>Original Actions</h1>
-          <p className="header-sub">Build the habit. Shape the life.</p>
+          <p className="header-sub">Return to what matters.</p>
         </div>
         <div className="header-right">
-          <span className="total-streak" title="Sum of all current streaks">🔥 {totalStreak} total days</span>
+          <span className="total-streak" title="Combined rhythm days">{totalStreak} rhythm days</span>
           <button onClick={handleLogout} className="btn-logout">Logout</button>
         </div>
       </header>
@@ -175,17 +181,42 @@ export default function Dashboard() {
                 value={newHabit.category}
                 onChange={(e) => setNewHabit({ ...newHabit, category: e.target.value })}
               >
-                <option value="spiritual">✝️ Spiritual</option>
-                <option value="health">🥗 Health</option>
-                <option value="learning">📚 Learning</option>
-                <option value="fitness">💪 Fitness</option>
-                <option value="other">⭐ Other</option>
+              <option value="spiritual">Spiritual</option>
+                <option value="health">Health</option>
+                <option value="learning">Learning</option>
+                <option value="fitness">Fitness</option>
+                <option value="other">Other</option>
               </select>
             </div>
 
             <button type="submit" className="btn-primary">Create Habit</button>
           </form>
         )}
+
+        <div className="weekly-rhythm">
+          <div className="weekly-header">
+            <span className="weekly-title">This Week</span>
+            <span className="weekly-score">{weekScore}%</span>
+          </div>
+          <div className="weekly-days">
+            {weekDays.map((day, i) => (
+              <div
+                key={i}
+                className={`day-dot${weekCompleted[i] ? ' filled' : ''}${i === today ? ' today' : ''}`}
+              >
+                <div className="day-dot-marker" />
+                <span className="day-label">{day}</span>
+              </div>
+            ))}
+          </div>
+          <p className="weekly-encouragement">
+            {weekScore >= 80
+              ? 'A steady rhythm. Grace is at work in you.'
+              : weekScore >= 50
+                ? "You're showing up. That's what matters."
+                : 'Grace meets you here. Begin again today.'}
+          </p>
+        </div>
 
         <div className="habits-grid">
           {habits.length === 0 ? (
@@ -253,8 +284,33 @@ export default function Dashboard() {
           )}
         </div>
 
+        {!habits.some(h => h.completedToday) && (
+          <div className="grace-message">
+            <p>Original Actions helps you return gently—to prayer, Scripture, and reflection. Grace meets you here. Begin again today.</p>
+          </div>
+        )}
+
         <Leaderboard />
       </main>
+
+      <nav className="bottom-nav">
+        {[
+          { id: 'home', icon: '⌂', label: 'Home' },
+          { id: 'prayer', icon: '◎', label: 'Prayer' },
+          { id: 'scripture', icon: '□', label: 'Scripture' },
+          { id: 'journal', icon: '◊', label: 'Journal' },
+          { id: 'settings', icon: '⚙', label: 'Settings' },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            className={`nav-tab${activeNav === tab.id ? ' active' : ''}`}
+            onClick={() => setActiveNav(tab.id)}
+          >
+            <span className="nav-icon">{tab.icon}</span>
+            <span className="nav-label">{tab.label}</span>
+          </button>
+        ))}
+      </nav>
     </div>
   )
 }

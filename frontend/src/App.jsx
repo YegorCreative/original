@@ -26,6 +26,13 @@ function App() {
     axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
   }
 
+  const loginAsGuest = () => {
+    const guestToken = 'guest'
+    setUser({ name: 'Guest', email: '' })
+    setToken(guestToken)
+    localStorage.setItem('token', guestToken)
+  }
+
   const logout = () => {
     setUser(null)
     setToken(null)
@@ -39,7 +46,7 @@ function App() {
 
   return (
     <Router>
-      <AuthContext.Provider value={{ user, token, login, logout }}>
+      <AuthContext.Provider value={{ user, token, login, loginAsGuest, logout }}>
         <Routes>
           <Route path="/login" element={!token ? <Login /> : <Navigate to="/dashboard" />} />
           <Route path="/signup" element={!token ? <Signup /> : <Navigate to="/dashboard" />} />

@@ -10,7 +10,7 @@ export default function Login() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const { login } = useContext(AuthContext)
+  const { login, loginAsGuest } = useContext(AuthContext)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -30,6 +30,11 @@ export default function Login() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleGuest = () => {
+    loginAsGuest()
+    navigate('/dashboard')
   }
 
   return (
@@ -67,6 +72,10 @@ export default function Login() {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+
+        <button onClick={handleGuest} className="btn-guest">
+          Continue as Guest
+        </button>
 
         <p className="auth-link">
           Don't have an account? <Link to="/signup">Sign up</Link>

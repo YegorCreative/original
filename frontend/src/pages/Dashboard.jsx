@@ -22,6 +22,13 @@ function triggerLogHaptic() {
   }
 }
 
+const MOCK_HABITS = [
+  { id: 1, name: 'Morning Prayer', description: 'Start the day with gratitude', category: 'spiritual', currentStreak: 7, longestStreak: 14, completedToday: false, total_completed: 21 },
+  { id: 2, name: 'Read Bible', description: 'One chapter per day', category: 'spiritual', currentStreak: 3, longestStreak: 10, completedToday: true, total_completed: 15 },
+  { id: 3, name: 'Morning Run', description: '30 minutes outside', category: 'fitness', currentStreak: 5, longestStreak: 12, completedToday: false, total_completed: 18 },
+  { id: 4, name: 'Read 20 Pages', description: 'Non-fiction growth book', category: 'learning', currentStreak: 2, longestStreak: 8, completedToday: false, total_completed: 10 },
+]
+
 export default function Dashboard() {
   const [habits, setHabits] = useState([])
   const [loading, setLoading] = useState(true)
@@ -29,13 +36,19 @@ export default function Dashboard() {
   const [prayerHabitId, setPrayerHabitId] = useState(null)
   const [newHabit, setNewHabit] = useState({ name: '', description: '', category: 'spiritual' })
   const navigate = useNavigate()
-  const { logout } = useContext(AuthContext)
+  const { token, logout } = useContext(AuthContext)
+  const isGuest = token === 'guest'
 
   useEffect(() => {
     fetchHabits()
   }, [])
 
   const fetchHabits = async () => {
+    if (isGuest) {
+      setHabits(MOCK_HABITS)
+      setLoading(false)
+      return
+    }
     try {
       setLoading(true)
       const response = await axios.get('/api/habits')
@@ -49,6 +62,13 @@ export default function Dashboard() {
 
   const handleCreateHabit = async (e) => {
     e.preventDefault()
+    if (isGuest) {
+      const fakeHabit = { ...newHabit, id: Date.now(), currentStreak: 0, longestStreak: 0, completedToday: false, total_completed: 0 }
+      setHabits(prev => [fakeHabit, ...prev])
+      setNewHabit({ name: '', description: '', category: 'spiritual' })
+      setShowForm(false)
+      return
+    }
     try {
       await axios.post('/api/habits', newHabit)
       setNewHabit({ name: '', description: '', category: 'other' })
@@ -60,6 +80,11 @@ export default function Dashboard() {
   }
 
   const handleLogHabit = async (habitId) => {
+    if (isGuest) {
+      triggerLogHaptic()
+      setHabits(prev => prev.map(h => h.id === habitId ? { ...h, completedToday: !h.completedToday } : h))
+      return
+    }
     try {
       triggerLogHaptic()
       await axios.post(`/api/habits/${habitId}/log`)
@@ -71,6 +96,10 @@ export default function Dashboard() {
 
   const handleDeleteHabit = async (habitId) => {
     if (confirm('Are you sure you want to delete this habit?')) {
+      if (isGuest) {
+        setHabits(prev => prev.filter(h => h.id !== habitId))
+        return
+      }
       try {
         await axios.delete(`/api/habits/${habitId}`)
         fetchHabits()
@@ -93,6 +122,11 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
+      {isGuest && (
+        <div className="guest-banner">
+          👋 You're in guest mode — data is not saved. <a href="/login">Log in</a> or <a href="/signup">sign up</a> to save your habits.
+        </div>
+      )}
       <header className="dashboard-header">
         <div>
           <h1>Original Actions</h1>
